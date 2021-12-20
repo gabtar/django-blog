@@ -11,7 +11,11 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    """ Serializador para el modelo de usuario base de django """
+    """ Serializador para el modelo de usuario """
     class Meta:
         model = get_user_model()
-        fields = ('id', 'username',)
+        fields = ('id', 'email', 'password')
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        return get_user_model().objects.create_user(**validated_data)
