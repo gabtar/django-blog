@@ -40,20 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
     'rest_framework',
-    # 'rest_framework.authtoken',
-    # 'dj_rest_auth',
-    # 'dj_rest_auth.registration',
-    # 'allauth',
-    # 'allauth.account',
-    # 'allauth.socialaccount',
+    'rest_framework.authtoken',
     'drf_yasg',
 
-    'posts',
+    'blog',
 ]
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -117,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Custom user model
-AUTH_USER_MODEL = 'posts.User'
+AUTH_USER_MODEL = 'blog.User'
 
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None

@@ -7,13 +7,13 @@ from django.db import models
 class UserManager(BaseUserManager):
     """" Control para la creacion de usuarios del blog"""
 
-    def create_user(self, email, password):
+    def create_user(self, email, password, **kwargs):
         try:
             validate_password(password)
         except:
             raise ValueError("Password insegura.")
 
-        user = self.model(email=email)
+        user = self.model(email=email, **kwargs)
         user.set_password(password)
         user.save(using=self._db)
 
@@ -25,6 +25,7 @@ class User(AbstractBaseUser):
        email = models.EmailField(max_length=255, unique=True)
        
        is_active = models.BooleanField(default=True)
+       is_author = models.BooleanField(default=False)
        is_staff = models.BooleanField(default=False)
 
        objects = UserManager()
