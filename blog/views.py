@@ -5,7 +5,7 @@ from rest_framework import mixins
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 
-from blog.permissions import IsAuthorOrReadOnly, IsBlogAuthor, IsUserOwner
+from blog.permissions import IsBlogAuthor, IsUserOwner, PostPermissions
 from blog.models import Post
 from blog.serializers import PostSerializer, UserSerializer
 
@@ -38,7 +38,7 @@ class UserUpdateIsAuthor(generics.UpdateAPIView):
 
 class PostViewSet(viewsets.ModelViewSet):
     """ Viewset para manejar los endpoint del modelo de post """
-    # permission_classes = (IsAuthorOrReadOnly,IsBlogAuthor,)
+    permission_classes = (PostPermissions,)
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 

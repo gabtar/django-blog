@@ -39,7 +39,7 @@ class User(AbstractBaseUser):
 
 class Post(models.Model):
     """ Modelo para post del blog """
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
     title = models.CharField(max_length=50)
     body = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -47,3 +47,15 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Comment(models.Model):
+    """ Modelo para un comentario del blog """
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
+    answer_to = models.ForeignKey('self', on_delete=models.SET_NULL, blank=True, null=True,related_name='answers')
+    comment = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.user
