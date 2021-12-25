@@ -40,7 +40,15 @@ class CommentModelTest(TestCase):
 
     def setUp(self):
         self.user = get_user_model().objects.create_user(email='test@test.com', password='test12345')
+        self.post = Post.objects.create(
+                author=self.user,
+                title='Test title',
+                body='Test body',
+        )
+        self.post.save()
+
         self.comment = Comment(
+            related_post=self.post,
             user=self.user,
             comment='Comentario de prueba'
         )
@@ -54,12 +62,14 @@ class CommentModelTest(TestCase):
     def test_comment_can_have_many_answers(self):
         """ Comprueba que un comentario pueda tener otros comentarios en respuesta """
         answer_comment_one = Comment(
+            related_post=self.post,
             user=self.user,
             comment='Respuesta #1',
             answer_to=self.comment
         )
         answer_comment_one.save()
         answer_comment_two = Comment(
+            related_post=self.post,
             user=self.user,
             comment='Respuesta #2',
             answer_to=self.comment

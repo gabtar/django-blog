@@ -2,12 +2,12 @@ from django.contrib.auth import get_user_model
 
 from rest_framework import generics, viewsets
 from rest_framework import mixins
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.authentication import TokenAuthentication
 
 from blog.permissions import IsBlogAuthor, IsUserOwner, PostPermissions
-from blog.models import Post
-from blog.serializers import PostSerializer, UserSerializer
+from blog.models import Post, Comment
+from blog.serializers import PostSerializer, UserSerializer, CommentSerializer
 
 
 class UserCreate(generics.CreateAPIView):
@@ -39,7 +39,18 @@ class UserUpdateIsAuthor(generics.UpdateAPIView):
 class PostViewSet(viewsets.ModelViewSet):
     """ Viewset para manejar los endpoint del modelo de post """
     permission_classes = (PostPermissions,)
+    authentication_classes = (TokenAuthentication,)
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
+
+class CommentViewSet(viewsets.GenericViewSet,
+        mixins.RetrieveModelMixin, 
+        mixins.CreateModelMixin, 
+        mixins.UpdateModelMixin):
+    """ Viewset para manejar los endpoint del modelo de comentario """
+    queryset = Comment.objects.all()
+    permission_classes = (IsAuthenticatedOrReadOnly,IsUserOwner)
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = CommentSerializer
 

@@ -3,12 +3,14 @@ from django.urls import path, include
 from rest_framework.routers import SimpleRouter
 from rest_framework.authtoken.views import obtain_auth_token
 
-from blog.views import PostViewSet, UserCreate, UserUpdatePassword, UserUpdateIsAuthor
+from blog.views import CommentViewSet, PostViewSet, UserCreate, UserUpdatePassword, UserUpdateIsAuthor
 
 app_name = 'blog'
 
 router = SimpleRouter()
-router.register(r'', PostViewSet, basename='posts')
+router.register(r'posts', PostViewSet, basename='posts')
+router.register(r'comments', CommentViewSet, basename='comments')
+# TODO Armar el modelo de usuario con viewset generic y el router
 
 urlpatterns = [
     path('', include(router.urls)),

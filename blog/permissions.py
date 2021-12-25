@@ -6,6 +6,8 @@ class IsUserOwner(permissions.BasePermission):
     Solo el propio usuario puede cambiar su password
     """
     def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
         return obj.user == request.user
 
 

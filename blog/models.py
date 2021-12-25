@@ -51,11 +51,12 @@ class Post(models.Model):
 
 class Comment(models.Model):
     """ Modelo para un comentario del blog """
+    related_post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
-    answer_to = models.ForeignKey('self', on_delete=models.SET_NULL, blank=True, null=True,related_name='answers')
+    answer_to = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True,related_name='answers')
     comment = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.user
+        return f'Post: {self.related_post}, user: {self.user}'

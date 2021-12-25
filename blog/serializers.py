@@ -3,7 +3,7 @@ from django.contrib.auth.password_validation import validate_password
 
 from rest_framework import serializers
 
-from blog.models import Post
+from blog.models import Comment, Post
 
 class PostSerializer(serializers.ModelSerializer):
     """ Serializador para el modelo de Post """
@@ -41,3 +41,8 @@ class UserSerializer(serializers.ModelSerializer):
         return instance
 
 
+class CommentSerializer(serializers.ModelSerializer):
+    """ Serializador para el modelo de Comment """
+    class Meta:
+        model = Comment
+        fields = ('id', 'related_post', 'user', 'answer_to', 'comment', 'created_at',)
