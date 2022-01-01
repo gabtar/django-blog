@@ -16,29 +16,31 @@ class UserSerializer(serializers.ModelSerializer):
     """ Serializador para el modelo de usuario """
     class Meta:
         model = get_user_model()
-        fields = ('id', 'email', 'password', 'is_author')
+        fields = ('id', 'email', 'password')
         extra_kwargs = {'password': {'write_only': True}}
+
+    # En los serializadores se puede usar el metodo "validate_campo" por cada campo(field) a validar
+    def validate_password(self, value):
+        try:
+             validate_password(value)
+        except:
+            raise serializers.ValidationError("Password insegura")
+        return value
 
     def create(self, validated_data):
         return get_user_model().objects.create_user(**validated_data)
+        
 
-    def update(self, instance, validated_data):
-        """ Actualiza parámetros del usuario """
-        password = validated_data.get('password', None)
-        is_author = validated_data.get('is_author', False)
+class PasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(max_length=255)
+    new_password = serializers.CharField(max_length=255)
 
-        instance.is_author = bool(is_author)
-
-        if password:
-            try:
-                validate_password(password)
-                instance.set_password(password)
-            except:
-                raise serializers.ValidationError('Password inseguro')
-
-        instance.save()
-
-        return instance
+    def validate_new_password(self, value):
+        try:
+             validate_password(value)
+        except:
+            raise serializers.ValidationError("Password insegura")
+        return value
 
 
 class CommentSerializer(serializers.ModelSerializer):

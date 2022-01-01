@@ -1,6 +1,10 @@
 from rest_framework import permissions
 
 
+class UserOwner(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return obj == request.user
+
 class IsUserOwner(permissions.BasePermission):
     """
     Solo el propio usuario puede cambiar su password

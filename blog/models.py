@@ -1,26 +1,29 @@
-from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
-from django.contrib.auth import get_user_model
-from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 from django.db import models
 
 
 class UserManager(BaseUserManager):
     """" Control para la creacion de usuarios del blog"""
 
-    def create_user(self, email, password, **kwargs):
-        try:
-            validate_password(password)
-        except:
-            raise ValueError("Password insegura.")
+    def create_user(self, email, password):
 
-        user = self.model(email=email, **kwargs)
+        user = self.model(email=email)
         user.set_password(password)
         user.save(using=self._db)
 
         return user
 
+    def create_superuser(self, email, password):
 
-class User(AbstractBaseUser):
+        user = self.create_user(email, password)
+        user.is_staff = True
+        user.is_superuser = True
+        user.save(using=self._db)
+
+        return user
+
+
+class User(AbstractBaseUser, PermissionsMixin):
        """" Modelo de usuario del blog """ 
        email = models.EmailField(max_length=255, unique=True)
        

@@ -1,13 +1,14 @@
 from django.contrib.auth import get_user_model
 
-from rest_framework import generics, viewsets
-from rest_framework import mixins
+from rest_framework import generics, viewsets, mixins, status
+from rest_framework.response import Response
+from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.authentication import TokenAuthentication
 
-from blog.permissions import IsBlogAuthor, IsUserOwner, PostPermissions
+from blog.permissions import IsBlogAuthor, IsUserOwner, PostPermissions, UserOwner
 from blog.models import Post, Comment
-from blog.serializers import PostSerializer, UserSerializer, CommentSerializer
+from blog.serializers import PostSerializer, UserSerializer, CommentSerializer, PasswordSerializer
 
 
 class UserCreate(generics.CreateAPIView):
@@ -17,23 +18,34 @@ class UserCreate(generics.CreateAPIView):
     permission_classes = (AllowAny,)
 
 
-class UserUpdatePassword(generics.UpdateAPIView):
-    """ Endpoint para actualizar el password del usuario """
+class UserViewSet(viewsets.GenericViewSet):
+    """ Viewset para manejar los endpoint del modelo de usuario """
     queryset = get_user_model().objects.all()
-    serializer_class = UserSerializer
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,IsUserOwner,)
-
-    def get_object(self):
-        return self.request.user
-
-
-class UserUpdateIsAuthor(generics.UpdateAPIView):
-    """ Endpoint para establecer a un usuario como autor del blog """
-    queryset = get_user_model().objects.all()
     serializer_class = UserSerializer
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,IsBlogAuthor,)
+
+    @action(detail=True, methods=['post'], permission_classes=[UserOwner,])
+    def change_password(self, request, pk=None):
+        user = self.get_object()
+        serializer = PasswordSerializer(data=request.data)
+
+        if serializer.is_valid():
+            if not user.check_password(serializer.validated_data.get('old_password')):
+                return Response('Contrasenia incorrecta', status=status.HTTP_400_BAD_REQUEST)
+            password = serializer.validated_data.get('new_password')
+            user.set_password(password)
+            user.save()
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=True, methods=['post'], permission_classes=[IsBlogAuthor,])
+    def set_as_author(self, request, pk=None):
+        user = self.get_object()
+        user.is_author = True
+        user.save()
+        return Response("Se han otorgado permisios de autor", status=status.HTTP_200_OK)
 
 
 class PostViewSet(viewsets.ModelViewSet):
