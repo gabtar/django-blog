@@ -1,0 +1,57 @@
+/*
+ * Blue colorscheme generated in colors.co:
+ * dark1 : #32213a
+ * light1: #383b53 con opacity 0.5 queda mejor
+ * light2: #66717e
+ */
+
+.header-container {
+  background-color:  #32213a;
+  opacity: 0.9;
+  box-shadow: 0px 5px 10px rgba(0,0,0,0.1);
+}
+
+.logo {
+  font-size: 4em;
+  font-weight: bold;
+  color: #66717e;
+}
+
+.nav-menu {
+  padding: .5em;
+}
+
+.nav-link {
+  display: block;
+  padding: .5em;
+  font-size: 1em;
+  font-weight: bold;
+  color: #fff;
+  text-decoration: none;
+  background-color: #ccc;
+  border-radius: 5px;
+  margin: .3em;
+}
+
+.nav-link:hover {
+  background-color: #000;
+}
+
+/* Responsive */
+@media screen and (min-width: 576px) {
+
+  .header-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .nav-link {
+    display: inline;
+  }
+
+
+}
+
+
