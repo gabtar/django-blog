@@ -28,9 +28,10 @@
   font-weight: bold;
   color: #fff;
   text-decoration: none;
-  background-color: #ccc;
+  background-color:  #66717e;
   border-radius: 5px;
   margin: .3em;
+  cursor: pointer;
 }
 
 .nav-link:hover {
@@ -50,8 +51,7 @@
   .nav-link {
     display: inline;
   }
-
-
 }
+
 
 

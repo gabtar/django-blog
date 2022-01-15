@@ -8,7 +8,7 @@ from rest_framework.authentication import TokenAuthentication
 
 from blog.permissions import IsBlogAuthor, IsUserOwner, PostPermissions, UserOwner
 from blog.models import Post, Comment
-from blog.serializers import PostSerializer, UserSerializer, CommentSerializer, PasswordSerializer
+from blog.serializers import PostSerializer, PostListSerializer, UserSerializer, CommentSerializer, PasswordSerializer
 
 
 class UserCreate(generics.CreateAPIView):
@@ -54,7 +54,12 @@ class PostViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-
+    
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return PostListSerializer
+        return self.serializer_class
+      
 
 class CommentViewSet(viewsets.GenericViewSet,
         mixins.RetrieveModelMixin, 

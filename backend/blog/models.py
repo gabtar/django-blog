@@ -51,6 +51,10 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
+    def body_preview(self):
+        """ Devuelve una version acortada del body del post """
+        return f'{self.body}'[:10]
+
 
 class Comment(models.Model):
     """ Modelo para un comentario del blog """

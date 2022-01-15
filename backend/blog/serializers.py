@@ -11,6 +11,18 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ('id', 'author', 'title', 'body', 'created_at',)
 
+class PostListSerializer(serializers.ModelSerializer):
+    """ Serializador para el modelo de posts para listar en la pagina principal del blog"""
+    created_at = serializers.DateTimeField(format='%a %d, %Y')
+    class Meta:
+        model = Post
+        fields = ('id', 'author', 'title', 'body', 'created_at',)
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        # Se limita a 200 caracteres
+        data["body"] = instance.body_preview()
+        return data
 
 class UserSerializer(serializers.ModelSerializer):
     """ Serializador para el modelo de usuario """
