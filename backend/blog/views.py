@@ -70,4 +70,8 @@ class CommentViewSet(viewsets.GenericViewSet,
     permission_classes = (IsAuthenticatedOrReadOnly,IsUserOwner)
     authentication_classes = (TokenAuthentication,)
     serializer_class = CommentSerializer
-
+    
+    def retrieve(self, request, pk=None):
+        queryset = Comment.objects.all().filter(related_post=pk)
+        serializer = CommentSerializer(queryset, many=True)
+        return Response(serializer.data) 

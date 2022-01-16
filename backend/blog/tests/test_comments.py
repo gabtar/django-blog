@@ -34,6 +34,11 @@ class PublicCommentAPITests(TestCase):
                 user=self.user,
                 comment='Test comment'
         )
+        self.comment_two = create_comment(
+                related_post=self.post,
+                user=self.user,
+                comment='Test comment #2'
+        )
 
         self.client = APIClient()
 
@@ -43,7 +48,8 @@ class PublicCommentAPITests(TestCase):
         response = self.client.get(URL_GET_COMMENTS(self.post.id))
 
         self.assertEqual(status.HTTP_200_OK, response.status_code)
-        self.assertEqual(self.comment.comment, response.data['comment'])
+        self.assertEqual(2, len(response.data))
+        self.assertEqual(self.comment.comment, response.data[0]['comment'])
 
 
 class PrivateCommentAPITests(TestCase):

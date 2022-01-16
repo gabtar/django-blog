@@ -1,0 +1,20 @@
+.comment-container {
+  display: flex;
+  flex-direction: column;
+  background-color: #ccc;
+  padding: .5em;
+  margin: 1em;
+  border-radius: .5em;
+  box-shadow: .1em .1em .2em #ccc;
+}
+
+.comment-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.comment-body {
+  padding: 1em;
+  text-align: left;
+}

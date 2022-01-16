@@ -53,7 +53,7 @@ class Post(models.Model):
 
     def body_preview(self):
         """ Devuelve una version acortada del body del post """
-        return f'{self.body}'[:10]
+        return f'{self.body}'[:100]
 
 
 class Comment(models.Model):
