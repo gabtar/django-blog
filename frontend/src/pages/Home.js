@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Article from '../components/Article';
+import routes from '../api';
 
 function Home() {
 
@@ -7,11 +8,9 @@ function Home() {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    const url = "http://localhost:8000/api/v1/posts/";
-
     const getPosts = async () => {
       try {
-        const response = await fetch(url);
+        const response = await fetch(routes.posts.GET);
         const json = await response.json();
         setLoaded(true);
         setPosts(json);

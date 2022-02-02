@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Comment from '../components/Comment';
+import CommentForm from '../components/CommentForm';
+import routes from '../api'
 
 
-function PostDetail() {
+function PostDetail({user}) {
 
   const { id } = useParams();
 
@@ -12,8 +14,8 @@ function PostDetail() {
 
   // Load data
   useEffect( () => {
-    const urlPost = `http://localhost:8000/api/v1/posts/${id}/`
-    const urlComments = `http://localhost:8000/api/v1/comments/${id}/`
+    const urlPost = routes.posts.GET+`${id}/`
+    const urlComments = routes.comments.GET+`${id}/`
 
     const getPosts = async (url, set) => {
       try {
@@ -25,6 +27,7 @@ function PostDetail() {
       }
     };
 
+ 
     getPosts(urlPost, setPost);
     getPosts(urlComments, setComments);
 
@@ -37,12 +40,13 @@ function PostDetail() {
       created_at={comment.created_at}
     /> 
   )
-
+  
   return (
     <>
       <h1>{post.title}</h1>
       <p>Fecha: {post.created_at}</p>
       <p>{post.body}</p>
+      {user.isAuthenticated ? <CommentForm /> : 'Ingrese para publicar un comentario'}
       <h2>Comentarios</h2>
       {comments_view}
     </>

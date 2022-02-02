@@ -1,0 +1,12 @@
+form {
+  background-color: #ccc;
+  margin: 1em;
+  border-radius: .5em;
+  box-shadow: .1em .1em .2em #ccc;
+}
+
+textarea {
+  resize: none;
+  width: 100%;
+  padding: 0;
+}

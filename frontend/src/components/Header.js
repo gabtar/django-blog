@@ -1,20 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React  from 'react';
 import { Link } from 'react-router-dom';
 import './Header.css';
 
-function Header() {
-
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    if (localStorage.getItem('token') !== null) {
-      setIsAuthenticated(true);
-    }
-  }, [isAuthenticated]);
+function Header({ user, setUser }) {
 
   const logout = () => {
     localStorage.clear();
-    setIsAuthenticated(false);
+    setUser({
+      username: '',
+      isAuthenticated: false,
+      userId: ''
+    });
   };
 
   return (
@@ -24,7 +20,7 @@ function Header() {
       </div>
       <div className="nav-menu">
         <Link to="/" className="nav-link">Home</Link>
-        { isAuthenticated ? <span onClick={logout} className='nav-link'>Logout</span> : <Link to="/login" className="nav-link">Login</Link>}
+        { user.isAuthenticated ? <span onClick={logout} className='nav-link'>Logout</span> : <Link to="/login" className="nav-link">Login</Link>}
       </div>
     </div>
   )

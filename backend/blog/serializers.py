@@ -7,6 +7,7 @@ from blog.models import Comment, Post
 
 class PostSerializer(serializers.ModelSerializer):
     """ Serializador para el modelo de Post """
+    created_at = serializers.DateTimeField(format='%a %d, %Y')
     class Meta:
         model = Post
         fields = ('id', 'author', 'title', 'body', 'created_at',)
@@ -57,6 +58,7 @@ class PasswordSerializer(serializers.Serializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     """ Serializador para el modelo de Comment """
+    created_at = serializers.DateTimeField(format='%a %d, %Y', read_only=True)
     class Meta:
         model = Comment
         fields = ('id', 'related_post', 'user', 'answer_to', 'comment', 'created_at',)

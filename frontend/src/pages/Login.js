@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Login.css';
+import api from '../api';
 
-function Login() {
+function Login({setUser}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const LOGIN_URL = "http://localhost:8000/api/v1/users/auth/";
+  const navigate = useNavigate();
 
   const getToken = async (event) => {
 
     event.preventDefault();
 
     try {
-      const response = await fetch(LOGIN_URL, {
+      const response = await fetch(api.users.LOGIN_URL, {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
@@ -26,9 +28,14 @@ function Login() {
         localStorage.clear();
         localStorage.setItem('token', json.token)
         // Login success
-        console.log(json);
-        window.location.replace('/');
+        setUser({
+          username: json.token,
+          isAuthenticated: true,
+          userId: 1
+        });
+        navigate(-1);
       } else {
+        // TODO Popup o algo parecido?
         // Bad request
         console.log(json);
       }
