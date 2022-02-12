@@ -19,6 +19,7 @@ function Header({ user, setUser }) {
         BLOG! &#9968;
       </div>
       <div className="nav-menu">
+        { user.isAuthenticated ? <span className="logged-in">{ user.username }</span> : '' }
         <Link to="/" className="nav-link">Home</Link>
         { user.isAuthenticated ? <span onClick={logout} className='nav-link'>Logout</span> : <Link to="/login" className="nav-link">Login</Link>}
       </div>

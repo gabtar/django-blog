@@ -67,6 +67,7 @@ class PublicUserAPITest(TestCase):
 
          self.assertEqual(status.HTTP_200_OK, response.status_code)
          self.assertIn('token', response.data)
+         self.assertEquals(user.id, response.data['id'])
 
     def test_user_cannot_obtain_token_when_invalid_credentials(self):
          """ Comprueba que nose pueda obtener el token si se pasan valores incorrectos """

@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.authtoken.views import ObtainAuthToken, Token
 
 from blog.permissions import IsBlogAuthor, IsUserOwner, PostPermissions, UserOwner
 from blog.models import Post, Comment
@@ -46,6 +47,14 @@ class UserViewSet(viewsets.GenericViewSet):
         user.is_author = True
         user.save()
         return Response("Se han otorgado permisios de autor", status=status.HTTP_200_OK)
+
+
+class CustomObtainAuthToken(ObtainAuthToken):
+    """ Vista para authenticar el usuario y devolver datos """
+    def post(self, request, *args, **kwargs):
+        response = super(CustomObtainAuthToken, self).post(request, *args, **kwargs)
+        token = Token.objects.get(key=response.data['token'])
+        return Response({'token': token.key, 'id': token.user_id})
 
 
 class PostViewSet(viewsets.ModelViewSet):

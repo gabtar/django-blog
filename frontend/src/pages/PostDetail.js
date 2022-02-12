@@ -38,7 +38,7 @@ function PostDetail({user}) {
       user={comment.user}
       body={comment.comment}
       created_at={comment.created_at}
-    /> 
+    />
   )
   
   return (
@@ -46,9 +46,9 @@ function PostDetail({user}) {
       <h1>{post.title}</h1>
       <p>Fecha: {post.created_at}</p>
       <p>{post.body}</p>
-      {user.isAuthenticated ? <CommentForm /> : 'Ingrese para publicar un comentario'}
+      {user.isAuthenticated ? <CommentForm user={user} postId={post.id}/> : 'Ingrese para publicar un comentario'}
       <h2>Comentarios</h2>
-      {comments_view}
+      {comments.length > 0 ? comments_view : 'Publicá el primer comentario'}
     </>
   );
 

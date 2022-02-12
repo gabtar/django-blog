@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import './CommentForm.css'
 import routes from '../api'
 
-function CommentForm() {
+function CommentForm({user, postId}) {
 
   const [newComment, setNewComment] = useState('')
 
@@ -14,10 +14,10 @@ function CommentForm() {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Authorization' : `Token ${localStorage.getItem('token')}`
+          'Authorization' : `Token ${user.token}`
         },
         method: 'POST',
-        body: JSON.stringify({ related_post: 1, user: 1, comment: newComment })
+        body: JSON.stringify({ related_post: postId, user: user.id, comment: newComment })
       });
       const json = await response.json();
 
@@ -29,7 +29,7 @@ function CommentForm() {
   }
 
   return(
-    <form onSubmit={postComment}>
+    <form onSubmit={postComment} className="comment-form">
       <textarea placeholder="Ingrese su comentario" onChange={(event) => setNewComment(event.target.value)} />
       <input type="submit" value="Enviar comentario" />
     </form>

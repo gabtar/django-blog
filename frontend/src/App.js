@@ -12,16 +12,14 @@ function App() {
   const [user, setUser] = useState({
     username: '',
     isAuthenticated: false,
-    userId: '',
+    isBlogAuthor: false,
+    token: '',
   });
 
   useEffect(() => {
-    if (localStorage.getItem('token') !== null) {
-      setUser({
-        username: '',
-        isAuthenticated: true,
-        userId: ''
-      });
+    let session = localStorage.getItem('userCredentials')
+    if (session !== null) {
+      setUser(JSON.parse(session));
     }
 
   }, []);

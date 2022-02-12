@@ -7,7 +7,7 @@ from blog.models import Comment, Post
 
 class PostSerializer(serializers.ModelSerializer):
     """ Serializador para el modelo de Post """
-    created_at = serializers.DateTimeField(format='%a %d, %Y')
+    created_at = serializers.DateTimeField(required=False, format='%a %d, %Y')
     class Meta:
         model = Post
         fields = ('id', 'author', 'title', 'body', 'created_at',)
@@ -29,8 +29,9 @@ class UserSerializer(serializers.ModelSerializer):
     """ Serializador para el modelo de usuario """
     class Meta:
         model = get_user_model()
-        fields = ('id', 'email', 'password')
-        extra_kwargs = {'password': {'write_only': True}}
+        fields = ('id', 'email', 'password', 'is_author')
+        extra_kwargs = {'password': {'write_only': True},
+                        'is_author': {'read_only': True} }
 
     # En los serializadores se puede usar el metodo "validate_campo" por cada campo(field) a validar
     def validate_password(self, value):

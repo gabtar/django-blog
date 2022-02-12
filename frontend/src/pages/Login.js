@@ -26,13 +26,18 @@ function Login({setUser}) {
 
       if ("token" in json) {
         localStorage.clear();
-        localStorage.setItem('token', json.token)
-        // Login success
-        setUser({
-          username: json.token,
+        const userCredentials = {
+          username: username,
+          id: json.id,
+          token: json.token,
           isAuthenticated: true,
-          userId: 1
-        });
+          // TODO Obtener del custom authtoken view si el usuario es autor
+          isAuthor: json.is_author, 
+        }
+
+        localStorage.setItem('userCredentials', JSON.stringify(userCredentials))
+        // Login success
+        setUser(userCredentials);
         navigate(-1);
       } else {
         // TODO Popup o algo parecido?
@@ -47,7 +52,7 @@ function Login({setUser}) {
 
 
   return (
-    <form className="form-container" onSubmit={getToken}>
+    <form className='login-form' onSubmit={getToken}>
       <input className='form-input' type='email' placeholder='Username' onChange={(event) => setUsername(event.target.value)} />
       <input className='form-input' type='password' placeholder='Password' onChange={(event) => setPassword(event.target.value)} />
       <input type='submit' value='Login' />
