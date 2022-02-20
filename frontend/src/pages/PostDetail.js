@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import Comment from '../components/Comment';
 import CommentForm from '../components/CommentForm';
 import routes from '../api'
@@ -35,7 +35,7 @@ function PostDetail({user}) {
 
   const comments_view = comments.map( (comment) => 
     <Comment key={comment.id}
-      user={comment.user}
+      user={comment.mail}
       body={comment.comment}
       created_at={comment.created_at}
     />
@@ -44,6 +44,7 @@ function PostDetail({user}) {
   return (
     <>
       <h1>{post.title}</h1>
+      { user.isAuthor ? <Link to='/admin/newpost' state={{ title: post.title, body: post.body, postId: post.id }}>Editar Post</Link> : '' }
       <p>Fecha: {post.created_at}</p>
       <p>{post.body}</p>
       {user.isAuthenticated ? <CommentForm user={user} postId={post.id}/> : 'Ingrese para publicar un comentario'}

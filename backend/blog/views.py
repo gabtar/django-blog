@@ -54,7 +54,8 @@ class CustomObtainAuthToken(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
         response = super(CustomObtainAuthToken, self).post(request, *args, **kwargs)
         token = Token.objects.get(key=response.data['token'])
-        return Response({'token': token.key, 'id': token.user_id})
+        is_author = get_user_model().objects.get(pk=token.user_id).is_author
+        return Response({ 'token': token.key, 'id': token.user_id, 'is_author': is_author })
 
 
 class PostViewSet(viewsets.ModelViewSet):

@@ -26,7 +26,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
        """" Modelo de usuario del blog """ 
        email = models.EmailField(max_length=255, unique=True)
-       
+
        is_active = models.BooleanField(default=True)
        is_author = models.BooleanField(default=False)
        is_staff = models.BooleanField(default=False)
@@ -48,6 +48,9 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ('-created_at',)
+
     def __str__(self):
         return self.title
 
@@ -64,6 +67,9 @@ class Comment(models.Model):
     comment = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ('-created_at',)
 
     def __str__(self):
         return f'Post: {self.related_post}, user: {self.user}'

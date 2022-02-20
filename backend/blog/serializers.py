@@ -43,7 +43,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         return get_user_model().objects.create_user(**validated_data)
-        
+
 
 class PasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(max_length=255)
@@ -60,6 +60,11 @@ class PasswordSerializer(serializers.Serializer):
 class CommentSerializer(serializers.ModelSerializer):
     """ Serializador para el modelo de Comment """
     created_at = serializers.DateTimeField(format='%a %d, %Y', read_only=True)
+    mail = serializers.SerializerMethodField()
+
     class Meta:
         model = Comment
-        fields = ('id', 'related_post', 'user', 'answer_to', 'comment', 'created_at',)
+        fields = ('id', 'related_post', 'user', 'mail', 'answer_to', 'comment', 'created_at',)
+
+    def get_mail(self, obj):
+        return obj.user.email

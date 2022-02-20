@@ -4,7 +4,7 @@ import '../assets/styles.css'
 import './Login.css';
 import api from '../api';
 
-function Login({setUser}) {
+function Register({setUser}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -15,36 +15,26 @@ function Login({setUser}) {
     event.preventDefault();
 
     try {
-      const response = await fetch(api.users.LOGIN_URL, {
+      const response = await fetch(api.users.REGISTER, {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
         method: 'POST',
-        body: JSON.stringify({ username: username, password: password })
+        body: JSON.stringify({ email: username, password: password })
       });
       const json = await response.json();
-      console.log(json);
+      console.log(response.status)
 
-      if ("token" in json) {
-        localStorage.clear();
-        const userCredentials = {
-          username: username,
-          id: json.id,
-          token: json.token,
-          isAuthenticated: true,
-          isAuthor: json.is_author, 
-        }
-
-        localStorage.setItem('userCredentials', JSON.stringify(userCredentials))
-        // Login success
-        setUser(userCredentials);
-        navigate(-1);
+      if (response.status === 201) {
+        // Loguear al usuario
+        // Display success register
+        navigate('/login')
       } else {
-        // TODO Popup o algo parecido?
-        // Bad request
-        console.log(json);
+        // Error
+        console.log("Bad request / cannot create");
       }
+
     } catch (error) {
       // ej No se puede conectar con el servidor(?)
       console.log(error);
@@ -54,13 +44,13 @@ function Login({setUser}) {
 
   return (
     <form className='login-form' onSubmit={getToken}>
-      <h2>Login</h2>
+      <h2>Registrarse</h2>
       <input className='form-control' type='email' placeholder='Username' onChange={(event) => setUsername(event.target.value)} />
       <input className='form-control' type='password' placeholder='Password' onChange={(event) => setPassword(event.target.value)} />
-      <input type='submit' className='btn' value='Login' />
+      <input type='submit' className='btn' value='Register' />
     </form>
   );
 
 }
 
-export default Login;
+export default Register;

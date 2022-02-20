@@ -1,0 +1,43 @@
+/* Estilos globales */
+/*
+ * Blue colorscheme generated in colors.co:
+ * dark1 : #32213a
+ * light1: #383b53 con opacity 0.5 queda mejor
+ * light2: #66717e
+ */
+
+.btn {
+  padding: .5em;
+  font-size: 1em;
+  font-weight: bold;
+  color: #fff;
+  text-decoration: none;
+  border: none;
+  background-color:  #66717e;
+  border-radius: 5px;
+  margin: .3em;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #000;
+}
+
+.form-control {
+  font-size: 1.5em;
+  border-radius: 5px;
+  border: 2px solid   #66717e;
+  padding: .2em;
+  margin: .2em;
+  width: 100%;
+}
+
+.form-container {
+  margin: auto;
+  width: 80%;
+  padding: 1em;
+}
+
+textarea {
+  resize: none;
+}

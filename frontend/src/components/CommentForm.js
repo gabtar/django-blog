@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import './CommentForm.css'
+import '../assets/styles.css'
 import routes from '../api'
 
 function CommentForm({user, postId}) {
@@ -29,13 +29,12 @@ function CommentForm({user, postId}) {
   }
 
   return(
-    <form onSubmit={postComment} className="comment-form">
-      <textarea placeholder="Ingrese su comentario" onChange={(event) => setNewComment(event.target.value)} />
-      <input type="submit" value="Enviar comentario" />
+    <form onSubmit={postComment} className="form-container">
+      <textarea className="form-control" placeholder="Ingrese su comentario" onChange={(event) => setNewComment(event.target.value)} />
+      <input type="submit" className="btn" value="Enviar comentario" />
     </form>
   )
 }
 
 
 export default CommentForm;
-
