@@ -23,6 +23,16 @@
   background-color: #000;
 }
 
+.btn:disabled {
+  opacity: 0.2;
+  cursor: not-allowed;
+}
+
+.btn:disabled:hover {
+  background-color:  #66717e;
+  opacity: 0.2;
+}
+
 .form-control {
   font-size: 1.5em;
   border-radius: 5px;

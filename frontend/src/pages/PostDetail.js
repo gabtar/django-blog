@@ -35,9 +35,14 @@ function PostDetail({user}) {
 
   const comments_view = comments.map( (comment) => 
     <Comment key={comment.id}
-      user={comment.mail}
+      id={comment.id}
+      username={comment.mail}
+      editable={user.username === comment.mail}
       body={comment.comment}
       created_at={comment.created_at}
+      comments={comments}
+      setComments={setComments}
+      user={user}
     />
   )
   
@@ -47,7 +52,7 @@ function PostDetail({user}) {
       { user.isAuthor ? <Link to='/admin/newpost' state={{ title: post.title, body: post.body, postId: post.id }}>Editar Post</Link> : '' }
       <p>Fecha: {post.created_at}</p>
       <p>{post.body}</p>
-      {user.isAuthenticated ? <CommentForm user={user} postId={post.id}/> : 'Ingrese para publicar un comentario'}
+      {user.isAuthenticated ? <CommentForm user={user} postId={post.id} setComments={setComments} comments={comments} /> : 'Ingrese para publicar un comentario'}
       <h2>Comentarios</h2>
       {comments.length > 0 ? comments_view : 'Publicá el primer comentario'}
     </>

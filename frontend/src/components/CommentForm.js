@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import '../assets/styles.css'
 import routes from '../api'
 
-function CommentForm({user, postId}) {
+function CommentForm({user, postId, comments, setComments}) {
 
   const [newComment, setNewComment] = useState('')
 
@@ -22,6 +22,7 @@ function CommentForm({user, postId}) {
       const json = await response.json();
 
       console.log(json);
+      setComments([json, ...comments])
 
     } catch(error) {
       console.log(error);

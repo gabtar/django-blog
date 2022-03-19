@@ -35,7 +35,7 @@ function NewPost({user}) {
       const json = await response.json();
 
       if (response.status === 201 || response.status === 200) {
-        navigate('/');
+        postToEdit ? navigate(-1) : navigate('/');
       }
 
     } catch(error) {
@@ -45,7 +45,7 @@ function NewPost({user}) {
 
   return (
     <form onSubmit={createPost} className="form-container">
-     <h1>Nuevo post</h1>
+     <h1>{postToEdit ? 'Editar Post' : 'Crear un nuevo Post' }</h1>
      <input 
       type="text"
       className="form-control"

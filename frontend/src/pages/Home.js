@@ -7,18 +7,27 @@ function Home() {
   const [posts, setPosts] = useState([]);
   const [loaded, setLoaded] = useState(false);
 
-  useEffect(() => {
-    const getPosts = async () => {
+  const [previousPage, setPreviousPage] = useState(null)
+  const [nextPage, setNextPage] = useState(null)
+
+  const getPosts = async (url) => {
       try {
-        const response = await fetch(routes.posts.GET);
+        const apiRoute = url === undefined ? routes.posts.GET : url
+
+        const response = await fetch(apiRoute);
         const json = await response.json();
         setLoaded(true);
-        setPosts(json);
+        setPosts(json.results);
+
+        setPreviousPage(json.previous);
+        setNextPage(json.next);
+
       } catch (error) {
         console.log("error", error);
       }
     };
 
+  useEffect(() => {
     getPosts();
   }, []);
 
@@ -36,6 +45,16 @@ function Home() {
     <>
       <h1>Últimos posts</h1>
       {loaded ? articles : <p>No se pudieron cargar los posts</p>}
+      <button className='btn' disabled={ previousPage === null } onClick={() => {
+        getPosts(previousPage)
+      }}>
+        {'<< Anterior'}
+      </button>
+      <button className='btn' disabled={ nextPage === null } onClick={() => {
+        getPosts(nextPage)
+      }}>
+        {'Siguiente >>'}
+      </button>
     </>
   )
 }

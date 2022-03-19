@@ -7,14 +7,12 @@ from blog.models import Comment, Post
 
 class PostSerializer(serializers.ModelSerializer):
     """ Serializador para el modelo de Post """
-    created_at = serializers.DateTimeField(required=False, format='%a %d, %Y')
     class Meta:
         model = Post
         fields = ('id', 'author', 'title', 'body', 'created_at',)
 
 class PostListSerializer(serializers.ModelSerializer):
     """ Serializador para el modelo de posts para listar en la pagina principal del blog"""
-    created_at = serializers.DateTimeField(format='%a %d, %Y')
     class Meta:
         model = Post
         fields = ('id', 'author', 'title', 'body', 'created_at',)
@@ -59,7 +57,6 @@ class PasswordSerializer(serializers.Serializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     """ Serializador para el modelo de Comment """
-    created_at = serializers.DateTimeField(format='%a %d, %Y', read_only=True)
     mail = serializers.SerializerMethodField()
 
     class Meta:

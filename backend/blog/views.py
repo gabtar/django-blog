@@ -6,6 +6,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.views import ObtainAuthToken, Token
+from rest_framework.pagination import PageNumberPagination
 
 from blog.permissions import IsBlogAuthor, IsUserOwner, PostPermissions, UserOwner
 from blog.models import Post, Comment
@@ -58,10 +59,17 @@ class CustomObtainAuthToken(ObtainAuthToken):
         return Response({ 'token': token.key, 'id': token.user_id, 'is_author': is_author })
 
 
+class PostPagination(PageNumberPagination):
+    page_size = 5
+    page_size_query_param = 'page_size'
+    max_page_size = 10
+
+
 class PostViewSet(viewsets.ModelViewSet):
     """ Viewset para manejar los endpoint del modelo de post """
     permission_classes = (PostPermissions,)
     authentication_classes = (TokenAuthentication,)
+    pagination_class = PostPagination
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     

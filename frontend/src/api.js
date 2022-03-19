@@ -12,6 +12,7 @@ const routes = {
   comments: {
     GET: "http://localhost:8000/api/v1/comments/",
     POST: "http://localhost:8000/api/v1/comments/",
+    PATCH: "http://localhost:8000/api/v1/comments/",
   }
 }
 

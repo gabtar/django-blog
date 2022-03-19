@@ -73,3 +73,4 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'Post: {self.related_post}, user: {self.user}'
+
